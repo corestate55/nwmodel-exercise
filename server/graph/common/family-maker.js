@@ -1,6 +1,7 @@
 /**
  * @file Definition of family-maker.
  */
+
 import RelationMakerBase from './relation-maker-base'
 
 /**
@@ -84,26 +85,6 @@ class FamilyMaker extends RelationMakerBase {
   }
 
   /**
-   * Find node with its layer and name.
-   * @param {string} targetNodeName - Name of target node.
-   * @param {string} [targetNodeLayer] - Layer of target node.
-   * @returns {FSNode} Found node.
-   * @private
-   */
-  _findTargetNode(targetNodeName, targetNodeLayer) {
-    this.consoleDebug(
-      1,
-      '_findTargetNode',
-      `Search ${targetNodeLayer}__${targetNodeName}`
-    )
-    if (targetNodeLayer) {
-      return this.findTargetNodeByPath(`${targetNodeLayer}__${targetNodeName}`)
-    } else {
-      return this.findTargetNodeByName(targetNodeName)
-    }
-  }
-
-  /**
    * Mark family relation of target node.
    * @param {string} targetNodeName - Name of target node.
    * @param {string} [targetNodeLayer] - Layer of target node.
@@ -112,7 +93,7 @@ class FamilyMaker extends RelationMakerBase {
   markFamilyWithTarget(targetNodeName, targetNodeLayer) {
     this.consoleDebug(0, 'markTarget', 'START')
 
-    const targetNode = this._findTargetNode(targetNodeName, targetNodeLayer)
+    const targetNode = this.findTargetNode(targetNodeName, targetNodeLayer)
     if (!targetNode) {
       this.consoleDebug(
         0,
@@ -146,7 +127,7 @@ class FamilyMaker extends RelationMakerBase {
 }
 
 /**
- * @typedef {ForceSimulationNode|NestedNode} FSNode
+ * @typedef {ForceSimulationNode|NestedNode|DistanceNode} FSNode
  * ForceSimulationNode or its child class.
  */
 /**

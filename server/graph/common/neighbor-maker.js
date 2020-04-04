@@ -30,14 +30,15 @@ class NeighborRelation {
  */
 class NeighborMaker extends RelationMakerBase {
   /**
-   * @param {Array<FSNode>} nodes - nodes
-   * @param {Array<ForceSimulationLink>} links - links
+   * @param {Array<DistanceNode>} nodes - nodes
+   * @param {Array<DistanceLink>} links - links
    */
   constructor(nodes, links) {
     super(nodes)
+
     /**
      * Links (each in multiple layers)
-     * @type {Array<ForceSimulationLink>}
+     * @type {Array<DistanceLink>}
      */
     this.links = links
   }
@@ -49,12 +50,14 @@ class NeighborMaker extends RelationMakerBase {
    * @returns {boolean} True if found target and marked neighbors of it.
    */
   markNeighborWithTarget(targetNodeName, targetNodeLayer) {
-    // TODO: when targetNodeName is termpoint?
-    const targetNode = targetNodeLayer
-      ? this.findTargetNodeByPath([targetNodeLayer, targetNodeName].join('__'))
-      : this.findTargetNodeByName(targetNodeName)
-
+    // TODO: when targetNodeName is term-point?
+    const targetNode = this.findTargetNode(targetNodeName, targetNodeLayer)
     if (!targetNode) {
+      this.consoleDebug(
+        0,
+        'markTarget',
+        `target: ${targetNodeName} (in layer: ${targetNodeLayer}) not found`
+      )
       return false
     }
     const targetLinks = this._findAllTpTpLinksInLayerOf(targetNode)
@@ -69,32 +72,20 @@ class NeighborMaker extends RelationMakerBase {
   }
 
   /**
-   * Pick layer name from path.
-   * @param {string} path - Path string.
-   * @returns {string} - Layer name.
-   * @private
-   */
-  _layerPath(path) {
-    return path.split('__').shift()
-  }
-
-  /**
    * Find all tp-tp type links in specified layer.
-   * @param {FSNode} targetNode - Target node.
-   * @returns {Array<ForceSimulationLink>} - Links.
+   * @param {DistanceNode} targetNode - Target node.
+   * @returns {Array<DistanceLink>} - Links.
    * @private
    */
   _findAllTpTpLinksInLayerOf(targetNode) {
-    const layer = this._layerPath(targetNode.path)
-    return this.links.filter(
-      d => d.type === 'tp-tp' && this._layerPath(d.path) === layer
-    )
+    const layer = targetNode.layerPath()
+    return this.links.filter(d => d.isTypeTpTp() && d.isInLayer(layer))
   }
 
   /**
    * Mark neighbor-relation recursively.
-   * @param {FSNode} srcNode - Origin.
-   * @param {Array<ForceSimulationLink>} wholeLinks - Links to check.
+   * @param {DistanceNode} srcNode - Origin.
+   * @param {Array<DistanceLink>} wholeLinks - Links to check.
    * @param {number} degree - Degree of neighbors.
    * @private
    */
@@ -116,9 +107,7 @@ class NeighborMaker extends RelationMakerBase {
       `targetLinks: ${targetLinks.map(d => d.path)}`
     )
     for (const targetLink of targetLinks) {
-      const dstNode = this._findNodeByPath(
-        this._linkEndNodePath(targetLink.targetPath)
-      )
+      const dstNode = this._findNodeByPath(targetLink.targetNodePath())
       if (dstNode.neighbor && dstNode.neighbor.degree <= degree) {
         this.consoleDebug(
           degree,
@@ -154,22 +143,9 @@ class NeighborMaker extends RelationMakerBase {
   }
 
   /**
-   * Pick node path which has specified link end (source/target term-point).
-   * @param {string} linkEndPath - Path of link end term-point.
-   * @returns {string} Node path.
-   * @private
-   */
-  _linkEndNodePath(linkEndPath) {
-    return linkEndPath
-      .split('__')
-      .slice(0, 2)
-      .join('__')
-  }
-
-  /**
    * Find node by path.
    * @param {string} path - Node path.
-   * @returns {FSNode} Found node.
+   * @returns {DistanceNode} Found node.
    * @private
    */
   _findNodeByPath(path) {
@@ -178,37 +154,31 @@ class NeighborMaker extends RelationMakerBase {
 
   /**
    * Find all links that is not connected with target.
-   * @param {Array<ForceSimulationLink>} links - Population of links.
-   * @param {FSNode} target - Target node.
-   * @returns {Array<ForceSimulationLink>} - Links.
+   * @param {Array<DistanceLink>} links - Population of links.
+   * @param {DistanceNode} target - Target node.
+   * @returns {Array<DistanceLink>} - Links.
    * @private
    */
   _findAllLinksWithoutOrigin(links, target) {
-    return links.filter(
-      d =>
-        this._linkEndNodePath(d.sourcePath) !== target.path &&
-        this._linkEndNodePath(d.targetPath) !== target.path
-    )
+    return links.filter(d => !d.isConnectingNode(target.path))
   }
 
   /**
    * Found all links that is connected with target.
-   * @param {Array<ForceSimulationLink>} links - Population of links.
-   * @param {FSNode} target - Target node.
-   * @returns {Array<ForceSimulationLink>} - Links.
+   * @param {Array<DistanceLink>} links - Population of links.
+   * @param {DistanceNode} target - Target node.
+   * @returns {Array<DistanceLink>} - Links.
    * @private
    */
   _findAllLinksWithOrigin(links, target) {
-    return links.filter(
-      d => this._linkEndNodePath(d.sourcePath) === target.path
-    )
+    return links.filter(d => d.sourceNodePath() === target.path)
   }
 }
 
 /**
  * Function to mark neighbor relations.
- * @param {Array<FSNode>} nodes - Nodes.
- * @param {Array<ForceSimulationLink>} links - Links.
+ * @param {Array<DistanceNode>} nodes - Nodes.
+ * @param {Array<DistanceLink>} links - Links.
  * @param {string} targetNodeName - Name of target node.
  * @param {string} [targetNodeLayer] - Layer of target node.
  * @returns {boolean} True if found target and marked other nodes.

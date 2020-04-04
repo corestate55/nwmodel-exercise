@@ -17,6 +17,26 @@ class RelationMakerBase {
   }
 
   /**
+   * Find node with its layer and name.
+   * @param {string} targetNodeName - Name of target node.
+   * @param {string} [targetNodeLayer] - Layer of target node.
+   * @returns {FSNode} Found node.
+   * @protected
+   */
+  findTargetNode(targetNodeName, targetNodeLayer) {
+    this.consoleDebug(
+      1,
+      '_findTargetNode',
+      `Search ${targetNodeLayer}__${targetNodeName}`
+    )
+    if (targetNodeLayer) {
+      return this.findTargetNodeByPath(`${targetNodeLayer}__${targetNodeName}`)
+    } else {
+      return this.findTargetNodeByName(targetNodeName)
+    }
+  }
+
+  /**
    * Find node with its name.
    * @param {string} name - Name of target node.
    * @returns {FSNode} Found node.
