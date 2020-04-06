@@ -47,6 +47,7 @@ class DistanceTopology {
   /**
    * Convert to dependency graph data.
    * @returns {DistanceTopologyData}
+   * @public
    */
   toData() {
     /**

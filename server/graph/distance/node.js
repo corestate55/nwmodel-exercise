@@ -6,6 +6,7 @@ import ForceSimulationNode from '../force-simulation/node'
 
 /**
  * @typedef {DistanceNode} DistanceNodeData
+ * @extends {ForceSimulationNode}
  */
 /**
  * Node of distance graph.
@@ -26,6 +27,7 @@ class DistanceNode extends ForceSimulationNode {
   /**
    * Pick layer name from path.
    * @returns {string} - Layer name.
+   * @public
    */
   layerPath() {
     return this.path.split('__').shift()
@@ -34,6 +36,7 @@ class DistanceNode extends ForceSimulationNode {
   /**
    * Check node has relation with target.
    * @returns {boolean} True if this node has family or neighbor relation.
+   * @public
    */
   hasTargetRelation() {
     return Boolean(

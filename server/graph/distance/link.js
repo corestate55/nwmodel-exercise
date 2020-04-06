@@ -6,11 +6,13 @@ import ForceSimulationLink from '../force-simulation/link'
 
 /**
  * Link of distance graph.
+ * @extends {ForceSimulationLink}
  */
 class DistanceLink extends ForceSimulationLink {
   /**
    * Pick layer name from path.
    * @returns {string} - Layer name.
+   * @public
    */
   layerPath() {
     return this.path.split('__').shift()
@@ -19,6 +21,7 @@ class DistanceLink extends ForceSimulationLink {
   /**
    * Get node path of source term-point.
    * @returns {string} Source node path.
+   * @public
    */
   sourceNodePath() {
     return this._endNodePath(this.sourcePath)
@@ -27,6 +30,7 @@ class DistanceLink extends ForceSimulationLink {
   /**
    * Get node path of target (destination) term-point.
    * @returns {string} Target node path.
+   * @public
    */
   targetNodePath() {
     return this._endNodePath(this.targetPath)
@@ -35,6 +39,7 @@ class DistanceLink extends ForceSimulationLink {
   /**
    * Check link type is tp-tp or not.
    * @returns {boolean} True if tp-tp type link.
+   * @public
    */
   isTypeTpTp() {
     return this.type === 'tp-tp'
@@ -44,6 +49,7 @@ class DistanceLink extends ForceSimulationLink {
    * Check link is in specified layer (network).
    * @param {string} layer - Layer name.
    * @returns {boolean} True if link in the layer.
+   * @public
    */
   isInLayer(layer) {
     return this.layerPath() === layer
@@ -53,6 +59,7 @@ class DistanceLink extends ForceSimulationLink {
    * Check is this link connects specified node.
    * @param {string} nodePath - Path of node.
    * @returns {boolean} True if this link has term-point in the node.
+   * @public
    */
   isConnectingNode(nodePath) {
     return (
