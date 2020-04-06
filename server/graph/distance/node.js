@@ -55,6 +55,14 @@ class DistanceNode extends ForceSimulationNode {
   }
 
   /**
+   * Check node-type node or not.
+   * @returns {boolean} True if this node is node-type node.
+   */
+  isTypeNode() {
+    return this.type === 'node'
+  }
+
+  /**
    * Check existence of object-type attribute.
    * @param {string} key - Attribute name to check ('family' or 'neighbor')
    * @returns {boolean} - True if exists.

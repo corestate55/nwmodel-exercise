@@ -41,7 +41,7 @@ class DistanceTopology {
 
     const target = graphQuery.target
     const layer = graphQuery.layer
-    markFamilyWithTarget(this.nodes, target, layer)
+    markFamilyWithTarget(this.nodes, target, layer) // it marks tp-type node.
     markNeighborWithTarget(this.nodes, this.links, target, layer)
   }
 
@@ -71,7 +71,10 @@ class DistanceTopology {
    * @private
    */
   _makeNodeLayout() {
-    const nodes = this.nodes.filter(d => d.hasTargetRelation())
+    const nodes = this.nodes.filter(
+      // markFamily marked tp-type node. filter it.
+      d => d.hasTargetRelation() && d.isTypeNode()
+    )
     const maxDistance = Math.max(...nodes.map(d => d.distance()))
     const distanceTable = []
 
@@ -92,8 +95,9 @@ class DistanceTopology {
       diNodes.forEach((d, i) => {
         d.di = i
         d.r = this.nodeRadius
-        d.cx = diR * Math.cos(theta * i)
-        d.cy = diR * Math.sin(theta * i)
+        const angle = theta * i - Math.PI / 2 // start on Y axis
+        d.cx = diR * Math.cos(angle)
+        d.cy = diR * Math.sin(angle)
       })
     }
     return distanceTable
