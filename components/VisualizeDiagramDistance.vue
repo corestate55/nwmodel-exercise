@@ -26,6 +26,7 @@
 <script>
 import DistanceDiagramVisualizer from '../lib/diagram/distance/visualizer'
 import VisualizeDiagramCommon from './VisualizeDiagramCommon'
+import '~/lib/style/distance.scss'
 
 export default {
   mixins: [VisualizeDiagramCommon],

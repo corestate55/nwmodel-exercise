@@ -22,6 +22,27 @@ class DistanceNode extends ForceSimulationNode {
     this.family = nodeData.family || {}
     /** @type {NeighborRelation} */
     this.neighbor = nodeData.neighbor || {}
+
+    /**
+     * X position of node circle center.
+     * @type {number}
+     */
+    this.cx = 0
+    /**
+     * Y position of node circle center.
+     * @type {number}
+     */
+    this.cy = 0
+    /**
+     * Radius of node circle.
+     * @type {number}
+     */
+    this.r = 0
+    /**
+     * Index in same distance circle nodes.
+     * @type {number}
+     */
+    this.di = -1
   }
 
   /**
@@ -34,14 +55,35 @@ class DistanceNode extends ForceSimulationNode {
   }
 
   /**
+   * Check existence of object-type attribute.
+   * @param {string} key - Attribute name to check ('family' or 'neighbor')
+   * @returns {boolean} - True if exists.
+   * @private
+   */
+  _exists(key) {
+    return Boolean(Object.keys(this[key]).length)
+  }
+
+  /**
    * Check node has relation with target.
    * @returns {boolean} True if this node has family or neighbor relation.
    * @public
    */
   hasTargetRelation() {
-    return Boolean(
-      Object.keys(this.family).length || Object.keys(this.neighbor).length
+    return Boolean(this._exists('family') || this._exists('neighbor'))
+  }
+
+  /**
+   * Distance of this node from target.
+   * @returns {number} Distance (>= 0).
+   * @public
+   */
+  distance() {
+    return (
+      (this._exists('family') && this.family.degree) ||
+      (this._exists('neighbor') && this.neighbor.degree)
     )
+    // TODO: if family and neighbor are empty object? or each has value?
   }
 }
 
