@@ -37,7 +37,7 @@ class DistanceTopology {
      * @const
      * @type {number}
      */
-    this.distanceCircleInterval = 50 // pt
+    this.distanceCircleInterval = this.nodeRadius * 2.5 // min: *2
 
     const target = graphQuery.target
     const layer = graphQuery.layer
@@ -58,8 +58,18 @@ class DistanceTopology {
       .reduce((sum, arr) => sum.concat(arr), [])
   }
 
-  _distanceCircleRadius(distanceBefore, theta) {
+  _distanceCircleRadius(dIndex, distanceTable, count) {
+    if (dIndex === 0) {
+      return 0
+    }
+
+    const distanceBefore = distanceTable[dIndex - 1].r
     const diR = distanceBefore + this.distanceCircleInterval
+    if (count <= 2) {
+      return diR // when 1 or 2 nodes
+    }
+
+    const theta = (2 * Math.PI) / count
     return diR * Math.sin(theta / 2) < this.nodeRadius
       ? this.nodeRadius / Math.sin(theta / 2)
       : diR
@@ -77,13 +87,15 @@ class DistanceTopology {
     )
     const maxDistance = Math.max(...nodes.map(d => d.distance()))
     const distanceTable = []
+    const round = value => {
+      const k = 1000
+      return Math.floor(value * k) / k
+    }
 
     for (let di = 0; di <= maxDistance; di++) {
       const diNodes = nodes.filter(d => d.distance() === di)
       const count = diNodes.length
-      const theta = (2 * Math.PI) / count
-      const diR =
-        di > 0 ? this._distanceCircleRadius(distanceTable[di - 1].r, theta) : 0
+      const diR = this._distanceCircleRadius(di, distanceTable, count)
       /**
        * @typedef {Object} DistanceNodeLayoutData
        * @prop {number} dIndex - Distance index.
@@ -94,10 +106,11 @@ class DistanceTopology {
 
       diNodes.forEach((d, i) => {
         d.di = i
-        d.r = this.nodeRadius
+        d.r = round(this.nodeRadius)
+        const theta = (2 * Math.PI) / count
         const angle = theta * i - Math.PI / 2 // start on Y axis
-        d.cx = diR * Math.cos(angle)
-        d.cy = diR * Math.sin(angle)
+        d.cx = round(diR * Math.cos(angle))
+        d.cy = round(diR * Math.sin(angle))
       })
     }
     return distanceTable

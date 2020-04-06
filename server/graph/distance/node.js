@@ -83,15 +83,14 @@ class DistanceNode extends ForceSimulationNode {
 
   /**
    * Distance of this node from target.
-   * @returns {number} Distance (>= 0).
+   * @returns {number} Distance (>= 0), -1 for error.
    * @public
    */
   distance() {
-    return (
-      (this._exists('family') && this.family.degree) ||
-      (this._exists('neighbor') && this.neighbor.degree)
-    )
-    // TODO: if family and neighbor are empty object? or each has value?
+    const f = this._exists('family') ? this.family.degree : -1 // -1: dummy
+    const n = this._exists('neighbor') ? this.neighbor.degree : -1
+    const values = [f, n].filter(d => d >= 0)
+    return values.length > 0 ? Math.min(...values) : -1 // -1: error value
   }
 }
 
