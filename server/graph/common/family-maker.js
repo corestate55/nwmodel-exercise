@@ -50,6 +50,16 @@ class FamilyMaker extends RelationMakerBase {
   }
 
   /**
+   * Check node has 'family' attribute.
+   * @param {FSNode} node - Node
+   * @returns {boolean} True family exists.
+   * @private
+   */
+  _existsFamilyInNode(node) {
+    return node.family && Object.keys(node.family).length > 0
+  }
+
+  /**
    * Find node and mark it as family.
    * @param {string} path - Path of target node.
    * @param {string} relationship - Family relation.
@@ -72,7 +82,7 @@ class FamilyMaker extends RelationMakerBase {
 
     // No need to update family if the node has family
     // and its degree is lower than current depth.
-    if (!('family' in node && node.family.degree < depth)) {
+    if (!(this._existsFamilyInNode(node) && node.family.degree < depth)) {
       /** @type {FamilyRelation} */
       node.family = new FamilyRelation(relationship, depth)
     }
