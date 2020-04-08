@@ -25,7 +25,6 @@ class DistanceTopology {
       d => new DistanceLink(d)
     )
 
-    // constants
     /**
      * Radius of node circle.
      * @const
@@ -117,11 +116,13 @@ class DistanceTopology {
        */
       layouts.push({ dIndex: di, nodes: diNodes, r: diR })
 
+      const startAngle =
+        Math.PI / 4 + ((di - 1) * Math.PI) / 2 / (maxDistance - 1)
       diNodes.forEach((d, i) => {
         d.di = i
         d.r = round(this.nodeRadius)
         const theta = (2 * Math.PI) / count
-        const angle = theta * i - Math.PI / 2 // start on Y axis
+        const angle = theta * i - startAngle
         d.cx = round(diR * Math.cos(angle))
         d.cy = round(diR * Math.sin(angle))
       })
