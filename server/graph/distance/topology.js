@@ -32,17 +32,22 @@ class DistanceTopology {
      * @type {number}
      */
     this.nodeRadius = 20 // pt
-    /**
-     * Radius of distance circle
-     * @const
-     * @type {number}
-     */
-    this.distanceCircleInterval = this.nodeRadius * 2.5 // min: *2
 
     const target = graphQuery.target
     const layer = graphQuery.layer
     markFamilyWithTarget(this.nodes, target, layer) // it marks tp-type node.
     markNeighborWithTarget(this.nodes, this.links, target, layer)
+  }
+
+  /**
+   * Radius of distance circle
+   * @param {number} degree - Distance degree.
+   * @returns {number} Radius.
+   * @private
+   */
+  _distanceCircleInterval(degree) {
+    const k = degree <= 1 ? 3.5 : 3 // min: *2
+    return k * this.nodeRadius
   }
 
   /**
@@ -72,7 +77,7 @@ class DistanceTopology {
     }
 
     const distanceBefore = layouts[dIndex - 1].r
-    const diR = distanceBefore + this.distanceCircleInterval
+    const diR = distanceBefore + this._distanceCircleInterval(dIndex)
     if (count <= 2) {
       return diR // when 1 or 2 nodes
     }
