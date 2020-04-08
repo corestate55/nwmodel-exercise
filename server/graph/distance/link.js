@@ -16,7 +16,9 @@ class DistanceLink extends ForceSimulationLink {
     super(linkData)
 
     // end node info
+    /** @type {string} */
     this.sourceNodePath = this._endNodePath(this.sourcePath)
+    /** @type {string} */
     this.targetNodePath = this._endNodePath(this.targetPath)
   }
 

@@ -70,8 +70,12 @@ class FamilyMaker extends RelationMakerBase {
       `mark ${node.path} as ${relationship}`
     )
 
-    /** @type {FamilyRelation} */
-    node.family = new FamilyRelation(relationship, depth)
+    // No need to update family if the node has family
+    // and its degree is lower than current depth.
+    if (!('family' in node && node.family.degree < depth)) {
+      /** @type {FamilyRelation} */
+      node.family = new FamilyRelation(relationship, depth)
+    }
 
     // Find recursively: node.parents or node.children
     for (const familyPath of node[relationship]) {
@@ -110,9 +114,9 @@ class FamilyMaker extends RelationMakerBase {
     )
 
     this.consoleDebug(0, 'markTarget', `find and mark as parents`)
-    this._findAndMarkAsFamily(targetNode.path, 'parents', 1)
+    this._findAndMarkAsFamily(targetNode.path, 'parents', 0)
     this.consoleDebug(0, 'markTarget', `find and mark as children`)
-    this._findAndMarkAsFamily(targetNode.path, 'children', 1)
+    this._findAndMarkAsFamily(targetNode.path, 'children', 0)
 
     /** @type {FamilyRelation} */
     targetNode.family = new FamilyRelation('target', 0)
