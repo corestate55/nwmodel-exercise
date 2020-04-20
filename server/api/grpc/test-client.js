@@ -5,15 +5,16 @@ const services = require('./topology-data_grpc_pb')
 
 function main() {
   console.log('# start client')
-  const client = new services.TopologyDataConverterClient(
+  const client = new services.TopologyDataClient(
     'localhost:50051',
     grpc.credentials.createInsecure()
   )
   const request = new messages.GraphRequest()
-  request.setJsonName('hoge.json')
+  request.setGraphType('forceSimulation')
+  request.setJsonName('target3b.json')
 
   console.log('# send request: ', request.toString())
-  client.getForceSimulationTopology(request, (error, response) => {
+  client.getDiagramData(request, (error, response) => {
     if (error) {
       console.warn('ERROR : ', error.message())
       return

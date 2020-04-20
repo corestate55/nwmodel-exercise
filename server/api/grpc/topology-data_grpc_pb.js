@@ -27,9 +27,9 @@ function deserialize_netoviz_GraphRequest(buffer_arg) {
 }
 
 
-var TopologyDataConverterService = exports.TopologyDataConverterService = {
-  getForceSimulationTopology: {
-    path: '/netoviz.TopologyDataConverter/GetForceSimulationTopology',
+var TopologyDataService = exports.TopologyDataService = {
+  getDiagramData: {
+    path: '/netoviz.TopologyData/GetDiagramData',
     requestStream: false,
     responseStream: false,
     requestType: topology$data_pb.GraphRequest,
@@ -41,4 +41,4 @@ var TopologyDataConverterService = exports.TopologyDataConverterService = {
   },
 };
 
-exports.TopologyDataConverterClient = grpc.makeGenericClientConstructor(TopologyDataConverterService);
+exports.TopologyDataClient = grpc.makeGenericClientConstructor(TopologyDataService);

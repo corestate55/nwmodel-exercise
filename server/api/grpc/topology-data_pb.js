@@ -60,7 +60,13 @@ proto.netoviz.GraphRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.netoviz.GraphRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    jsonName: jspb.Message.getFieldWithDefault(msg, 1, "")
+    graphType: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    jsonName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    target: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    layer: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    depth: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    aggregate: jspb.Message.getFieldWithDefault(msg, 6, false),
+    reverse: jspb.Message.getFieldWithDefault(msg, 7, false)
   };
 
   if (includeInstance) {
@@ -99,7 +105,31 @@ proto.netoviz.GraphRequest.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
+      msg.setGraphType(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
       msg.setJsonName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTarget(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLayer(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setDepth(value);
+      break;
+    case 6:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setAggregate(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setReverse(value);
       break;
     default:
       reader.skipField();
@@ -130,10 +160,52 @@ proto.netoviz.GraphRequest.prototype.serializeBinary = function() {
  */
 proto.netoviz.GraphRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getJsonName();
+  f = message.getGraphType();
   if (f.length > 0) {
     writer.writeString(
       1,
+      f
+    );
+  }
+  f = message.getJsonName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTarget();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getLayer();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getDepth();
+  if (f !== 0) {
+    writer.writeUint32(
+      5,
+      f
+    );
+  }
+  f = message.getAggregate();
+  if (f) {
+    writer.writeBool(
+      6,
+      f
+    );
+  }
+  f = message.getReverse();
+  if (f) {
+    writer.writeBool(
+      7,
       f
     );
   }
@@ -141,17 +213,111 @@ proto.netoviz.GraphRequest.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string json_name = 1;
+ * optional string graph_type = 1;
  * @return {string}
  */
-proto.netoviz.GraphRequest.prototype.getJsonName = function() {
+proto.netoviz.GraphRequest.prototype.getGraphType = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.netoviz.GraphRequest.prototype.setJsonName = function(value) {
+proto.netoviz.GraphRequest.prototype.setGraphType = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string json_name = 2;
+ * @return {string}
+ */
+proto.netoviz.GraphRequest.prototype.getJsonName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/** @param {string} value */
+proto.netoviz.GraphRequest.prototype.setJsonName = function(value) {
+  jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string target = 3;
+ * @return {string}
+ */
+proto.netoviz.GraphRequest.prototype.getTarget = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.netoviz.GraphRequest.prototype.setTarget = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string layer = 4;
+ * @return {string}
+ */
+proto.netoviz.GraphRequest.prototype.getLayer = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.netoviz.GraphRequest.prototype.setLayer = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional uint32 depth = 5;
+ * @return {number}
+ */
+proto.netoviz.GraphRequest.prototype.getDepth = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/** @param {number} value */
+proto.netoviz.GraphRequest.prototype.setDepth = function(value) {
+  jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional bool aggregate = 6;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.netoviz.GraphRequest.prototype.getAggregate = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 6, false));
+};
+
+
+/** @param {boolean} value */
+proto.netoviz.GraphRequest.prototype.setAggregate = function(value) {
+  jspb.Message.setProto3BooleanField(this, 6, value);
+};
+
+
+/**
+ * optional bool reverse = 7;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.netoviz.GraphRequest.prototype.getReverse = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 7, false));
+};
+
+
+/** @param {boolean} value */
+proto.netoviz.GraphRequest.prototype.setReverse = function(value) {
+  jspb.Message.setProto3BooleanField(this, 7, value);
 };
 
 

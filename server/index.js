@@ -8,9 +8,9 @@ const { Nuxt, Builder } = require('nuxt')
 const grpc = require('grpc')
 
 const config = require('../nuxt.config.js')
-const restApiRouter = require('./rest-api')
-const messages = require('./graph-api/grpc/topology-data_pb')
-const services = require('./graph-api/grpc/topology-data_grpc_pb')
+const restApiRouter = require('./api/rest')
+const getDiagramData = require('./api/grpc')
+const services = require('./api/grpc/topology-data_grpc_pb')
 
 // Import and Set Nuxt.js options
 config.dev = process.env.NODE_ENV !== 'production'
@@ -40,30 +40,21 @@ async function startHTTPServer() {
   // Listen the server
   app.listen(httpPort, host)
   consola.ready({
-    message: `HTTP Server listening on http://${host}:${httpPort}`,
+    message: `HTTP Server listening on http://${host}:${httpPort}/`,
     badge: true
   })
-}
-
-const getForceSimulationTopology = (call, callback) => {
-  console.log('# reply to: ', call.toString())
-  const reply = new messages.GraphReply()
-  reply.setGraphType('forceSimulation')
-  reply.setJsonName(call.request.getJsonName())
-  reply.setJson('{ "hoge": "test" }')
-  callback(null, reply)
 }
 
 /** gRPC server */
 function startGRPCServer() {
   const server = new grpc.Server()
-  server.addService(services.TopologyDataConverterService, {
-    getForceSimulationTopology
+  server.addService(services.TopologyDataService, {
+    getDiagramData
   })
   server.bind(`${host}:${grpcPort}`, grpc.ServerCredentials.createInsecure())
   server.start()
   consola.ready({
-    message: `gRPC Server listening on http://${host}:${grpcPort}`,
+    message: `gRPC Server listening on http://${host}:${grpcPort}/`,
     badge: true
   })
 }

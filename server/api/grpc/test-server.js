@@ -15,7 +15,7 @@ const getForceSimulationTopology = (call, callback) => {
 function main() {
   console.log('# start server')
   const server = new grpc.Server()
-  server.addService(services.TopologyDataConverterService, {
+  server.addService(services.TopologyDataService, {
     getForceSimulationTopology
   })
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure())
