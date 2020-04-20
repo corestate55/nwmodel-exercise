@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package netoviz;
+
+service TopologyDataConverter {
+  rpc GetForceSimulationTopology (GraphRequest) returns (GraphReply);
+}
+
+// TODO: temporary message format
+message GraphRequest {
+  string json_name = 1;
+}
+
+// TODO: temporary message format
+message GraphReply {
+  string graph_type = 1;
+  string json_name = 2;
+  string json = 3; // json string of diagram data
+}
