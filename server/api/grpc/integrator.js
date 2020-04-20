@@ -3,6 +3,10 @@ import _toNestedTopologyData from '../../graph/nested'
 import _toDistanceTopologyData from '../../graph/distance'
 import APIBase from '../common/api-base'
 
+/**
+ * gRPC body.
+ * @extends {APIBase}
+ */
 class GRPCIntegrator extends APIBase {
   /**
    * @override

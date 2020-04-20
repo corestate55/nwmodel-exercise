@@ -4,6 +4,9 @@ import CacheRfcTopologyDataConverter from './cache-topo-graph-converter'
 
 const asyncReadFile = promisify(fs.readFile)
 
+/**
+ * Base class for Server-side API.
+ */
 class APIBase {
   /**
    * @param {string} distDir - Directory path of distributed resources.

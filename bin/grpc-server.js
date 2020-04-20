@@ -1,9 +1,9 @@
 const grpc = require('grpc')
 
-const messages = require('./topology-data_pb')
-const services = require('./topology-data_grpc_pb')
+const messages = require('../server/api/grpc/topology-data_pb')
+const services = require('../server/api/grpc/topology-data_grpc_pb')
 
-const getForceSimulationTopology = (call, callback) => {
+const getDiagramData = (call, callback) => {
   console.log('# reply to: ', call.toString())
   const reply = new messages.GraphReply()
   reply.setGraphType('forceSimulation')
@@ -16,7 +16,7 @@ function main() {
   console.log('# start server')
   const server = new grpc.Server()
   server.addService(services.TopologyDataService, {
-    getForceSimulationTopology
+    getDiagramData
   })
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure())
   server.start()

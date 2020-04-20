@@ -1,14 +1,10 @@
 # gRPC memo
 
-## Tools
-
-```
-sudo npm install -g --unsafe-perm grpc-tools
-```
-
 ## Environment
 
 ```
+hagiwara@dev01:~/nwmodel/netoviz$ uname -a
+Linux dev01 5.3.0-46-generic #38-Ubuntu SMP Fri Mar 27 17:37:05 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
 hagiwara@dev01:~/nwmodel/netoviz$ node --version
 v10.15.2
 hagiwara@dev01:~/nwmodel/netoviz$ npm --version
@@ -16,6 +12,13 @@ hagiwara@dev01:~/nwmodel/netoviz$ npm --version
 hagiwara@dev01:~/nwmodel/netoviz$ grpc_tools_node_protoc --version
 libprotoc 3.6.1
 hagiwara@dev01:~/nwmodel/netoviz$ 
+```
+
+## Tools
+
+Note to use `--unsafe-perm`.
+```
+sudo npm install -g --unsafe-perm grpc-tools
 ```
 
 ## Compile
@@ -29,17 +32,17 @@ hagiwara@dev01:~/nwmodel/netoviz/server/graph-api/grpc$
 
 Server
 ```
-hagiwara@dev01:~/nwmodel/netoviz/server/graph-api/grpc$ node test-server.js 
+hagiwara@dev01:~/nwmodel/netoviz/$ node bin/grpc-server.js 
 ```
 
 Client
 ```
-hagiwara@dev01:~/nwmodel/netoviz/server/graph-api/grpc$ node test-client.js 
+hagiwara@dev01:~/nwmodel/netoviz/$ node bin/grpc-client.js
 # start client
 # send request:  hoge.json
 # Receive response:
 ## Graph type:  forceSimulation
 ## Json name:  hoge.json
 ## Json data:  { "hoge": "test" }
-hagiwara@dev01:~/nwmodel/netoviz/server/graph-api/grpc$ 
+hagiwara@dev01:~/nwmodel/netoviz/$ 
 ```

@@ -20,6 +20,7 @@ const asyncReadFile = promisify(fs.readFile)
 
 /**
  * Class of API for topology data converter.
+ * @extends {APIBase}
  */
 class RESTIntegrator extends APIBase {
   /**
