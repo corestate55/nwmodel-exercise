@@ -1,3 +1,4 @@
+import AlertTable from '../common/alert-table'
 import GRPCIntegrator from './integrator'
 const messages = require('./topology-data_pb')
 
@@ -19,4 +20,14 @@ const getDiagramData = async (call, callback) => {
   callback(null, reply)
 }
 
-module.exports = getDiagramData
+const getAlerts = async (call, callback) => {
+  const request = call.request
+  const reply = new messages.AlertReply()
+  const alertTable = new AlertTable()
+
+  const alerts = await alertTable.alerts(request.getNumber())
+  reply.setAlertsList(alerts.map(d => new messages.Alert(d.toGRPCArray())))
+  callback(null, reply)
+}
+
+module.exports = { getDiagramData, getAlerts }
