@@ -17,7 +17,7 @@ import db from '../../models'
 
 /**
  * Alert (same as gRPC Array message)
- * @see {@link topology-data.proto}
+ * @see server/api/grpc/topology-data.proto
  */
 class Alert {
   /**
@@ -37,7 +37,7 @@ class Alert {
 
   /**
    * Arrays to convert grpc message.
-   * @returns {Array<Array>}
+   * @returns {Array} - Values.
    */
   toGRPCArray() {
     // MUST be same sequence of gRPC Array message.
@@ -52,6 +52,12 @@ class Alert {
     ]
   }
 
+  /**
+   * Convert date string or instance to string.
+   * @param {Object|String} dateOrStr - Date object or string.
+   * @returns {string} - Date string.
+   * @private
+   */
   _date2string(dateOrStr) {
     const str =
       typeof dateOrStr === 'string' ? dateOrStr : dateOrStr?.toISOString()
