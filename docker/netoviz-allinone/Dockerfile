@@ -3,7 +3,7 @@ FROM node:12.16.3-alpine3.11
 WORKDIR /home
 RUN apk update \
     && apk add git \
-    && echo "# start repository cloning" \\
+    && echo "# start repository cloning" \
     && git clone https://github.com/corestate55/netoviz.git \
     && echo "# end repository cloning, change directory" \
     && cd netoviz \
