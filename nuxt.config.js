@@ -49,7 +49,17 @@ module.exports = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    [
+      'nuxt-env',
+      {
+        keys: [
+          { key: 'NETOVIZ_API', default: 'rest' },
+          'NETOVIZ_WEB_PORT',
+          'NETOVIZ_GRPC_WEB_PORT'
+        ]
+      }
+    ]
   ],
   /*
    ** Axios module configuration
