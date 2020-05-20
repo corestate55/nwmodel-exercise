@@ -6,6 +6,7 @@
 export default {
   computed: {
     apiParam() {
+      console.log('[AppAPICommon] NETOVIZ_API: ', process.env.NETOVIZ_API)
       return {
         use: process.env.NETOVIZ_API || 'rest', // default: REST
         grpcURIBase: this.grpcURIBase,
@@ -13,13 +14,16 @@ export default {
       }
     },
     grpcURIBase() {
-      const host = window.location.hostname || process.env.NETOVIZ_GRPC_WEB_ADDR
+      const host = window.location.hostname
       const port = process.env.NETOVIZ_GRPC_WEB_PORT
       return `http://${host}:${port}`
     },
     restURIBase() {
-      const host = window.location.hostname || process.env.NETOVIZ_REST_ADDR
-      const port = window.location.port || process.env.NETOVIZ_REST_PORT
+      const host = window.location.hostname
+      // If NETOVIZ_REST_PORT is defined,
+      // use it instead of browser location port.
+      // Run all-in-one application, unset NETOVIZ_REST_PORT.
+      const port = process.env.NETOVIZ_WEB_PORT || window.location.port
       return `http://${host}:${port}`
     }
   }

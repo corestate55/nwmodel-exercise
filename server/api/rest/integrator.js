@@ -58,10 +58,11 @@ class RESTIntegrator extends APIBase {
    * @private
    */
   _printGraphQuery(graphType, graphQuery) {
-    const paramString = Object.entries(graphQuery)
-      .map(([key, value]) => `${key}=${value}`)
-      .join(', ')
-    console.log(`call ${graphType}: ${paramString}`)
+    const paramStrings = []
+    Object.entries(/** @type {Object} */ graphQuery).forEach(
+      ([k, v]) => v && paramStrings.push(`${k}=${v}`)
+    )
+    console.log(`call ${graphType}: ${paramStrings.join(', ')}`)
   }
 
   /**

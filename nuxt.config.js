@@ -3,7 +3,7 @@ require('dotenv').config()
 module.exports = {
   server: {
     host: '0.0.0.0',
-    port: process.env.PORT || process.env.NETOVIZ_WEB_PORT
+    port: process.env.PORT || process.env.NETOVIZ_WEB_LISTEN
   },
   mode: 'universal',
   /*
@@ -41,15 +41,15 @@ module.exports = {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    ['@nuxtjs/dotenv', { systemvars: true }]
   ],
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/axios'
   ],
   /*
    ** Axios module configuration
